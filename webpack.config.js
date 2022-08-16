@@ -8,8 +8,9 @@ const webpackConfig = {
   },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: `[name].js`,
-    assetModuleFilename: "[name][ext]",
+    filename: `[name].[contenthash].js`,
+    assetModuleFilename: "[name].[contenthash][ext]",
+    clean: true,
   },
   module: {
     rules: [
