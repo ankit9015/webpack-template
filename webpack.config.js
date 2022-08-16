@@ -2,7 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const webpackConfig = {
-  mode: "development",
+  mode: "production",
   entry: {
     main: path.resolve(__dirname, "src", "index.js"),
   },
@@ -41,6 +41,18 @@ const webpackConfig = {
       template: "src/index.html",
     }),
   ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        node_vendors: {
+          name: "vendor",
+          test: /[\\/]node_modules[\\/]/,
+          chunks: "all",
+          priority: 1,
+        },
+      },
+    },
+  },
 };
 
 module.exports = webpackConfig;
