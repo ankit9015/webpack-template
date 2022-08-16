@@ -2,14 +2,25 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const webpackConfig = {
-  mode: "development",
+  mode: "production",
   entry: {
     main: path.resolve(__dirname, "src", "index.js"),
   },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: `[name].js`,
-    assetModuleFilename: "[name][ext]",
+    filename: `[name].[contenthash].js`,
+    assetModuleFilename: "[name].[contenthash][ext]",
+    clean: true,
+  },
+  devServer: {
+    static: {
+      directory: path.resolve(__dirname, "dist"),
+    },
+    port: 3000,
+    open: true,
+    hot: true,
+    compress: true,
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -40,6 +51,18 @@ const webpackConfig = {
       template: "src/index.html",
     }),
   ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        node_vendors: {
+          name: "vendor",
+          test: /[\\/]node_modules[\\/]/,
+          chunks: "all",
+          priority: 1,
+        },
+      },
+    },
+  },
 };
 
 module.exports = webpackConfig;
